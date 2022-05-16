@@ -4,9 +4,7 @@
   "description": "",
   "main": "chart.js",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build --mode production",
-    "preview": "vite preview"
+    "dev": "vite --mode production"
   },
   "author": "",
   "license": "ISC",

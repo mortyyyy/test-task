@@ -1,5 +1,5 @@
 import { boundaries, computeXRatio, computeYRatio } from "./utils";
-import { Component } from "../component";
+import { Component } from "../Component";
 
 const WIDTH = 1000;
 const HEIGHT = 200;
@@ -10,6 +10,9 @@ const VIEW_HEIGHT = DPI_HEIGHT - PADDING * 2;
 const VIEW_WIDTH = DPI_WIDTH - PADDING;
 const ROWS_COUNT = 5;
 const OFFSET = 10;
+const POINTER_WIDTH = 5;
+const TOOLTIP_HORIZONTAL_OFFSET = 20;
+const TOOLTIP_VERTICAL_OFFSET = 50;
 
 const STYLES = {
   chartLineWidth: 3,
@@ -54,50 +57,51 @@ export class Chart extends Component {
   onMousemove({ clientX }) {
     const { left } = this.canvas.getBoundingClientRect();
     const idx = Math.round(((clientX - left - OFFSET) * 2) / this.xRatio);
+
     if (idx > this.data.length - 1 || idx < 0) {
       return;
     }
 
     if (this.pointer) {
       this.pointer.style.left =
-        (Math.round(idx * this.xRatio) + PADDING - 5) / 2 + "px";
+        (Math.round(idx * this.xRatio) + PADDING - POINTER_WIDTH) / 2 + "px";
 
       this.pointer.style.top =
         Math.round(
           DPI_HEIGHT - PADDING - (this.data[idx].v - this.min) / this.yRatio
         ) /
           2 -
-        5 +
+        POINTER_WIDTH +
         "px";
     }
 
     if (this.tooltip) {
       this.tooltip.style.left =
-        (Math.round(idx * this.xRatio) + PADDING) / 2 + 20 + "px";
+        (Math.round(idx * this.xRatio) + PADDING) / 2 +
+        TOOLTIP_HORIZONTAL_OFFSET +
+        "px";
       this.tooltip.style.top =
         Math.round(
           DPI_HEIGHT - PADDING - (this.data[idx].v - this.min) / this.yRatio
         ) /
           2 -
-        50 +
+        TOOLTIP_VERTICAL_OFFSET +
         "px";
 
       const record = this.data[idx];
 
-      const content = this.tooltipFormatter
+      this.tooltip.innerHTML = this.tooltipFormatter
         ? this.tooltipFormatter(record)
         : null;
-
-      this.tooltip.innerHTML = content;
     }
 
-    this.tooltip.style.display = "";
-    this.pointer.style.display = "";
+    this.tooltip.style.display = "block";
+    this.pointer.style.display = "block";
   }
 
   onMouseleave() {
-    // this.tooltip.style.display = "none";
-    // this.pointer.style.display = "none";
+    this.tooltip.style.display = "none";
+    this.pointer.style.display = "none";
   }
 
   /**
@@ -136,8 +140,12 @@ export class Chart extends Component {
     for (let i = 1; i < this.data.length; i++) {
       const x = i * this.xRatio;
       if ((i - 1) % step === 0) {
-        const text = this.data[i].t;
-        this.context.fillText("", x + PADDING, DPI_HEIGHT - OFFSET);
+        const date = this.data[i].t;
+        this.context.fillText(
+          date.toLocaleDateString ? date.toLocaleDateString("ru-RU") : "",
+          x + PADDING,
+          DPI_HEIGHT - OFFSET
+        );
       }
     }
     this.context.stroke();
@@ -161,12 +169,12 @@ export class Chart extends Component {
     this.context.closePath();
   }
 
-  helpers() {
+  controls() {
     this.pointer = document.createElement("div");
-    this.pointer.classList.add("pointer");
+    this.pointer.classList.add("chart_pointer");
 
     this.tooltip = document.createElement("div");
-    this.tooltip.classList.add("tooltip");
+    this.tooltip.classList.add("chart_tooltip");
 
     this.el.appendChild(this.pointer);
     this.el.appendChild(this.tooltip);
@@ -200,7 +208,7 @@ export class Chart extends Component {
       this.yAxis();
       this.xAxis();
       this.line();
-      this.helpers();
+      this.controls();
     }
   }
 }

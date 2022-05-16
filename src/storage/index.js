@@ -1,5 +1,6 @@
 const BASE_OPTIONS = { keyPath: "t" };
 const BASE_INDEX = { name: "t", keyPath: "t", options: { unique: true } };
+const WORKER_URL = "src/storage/storageWorker.js";
 
 export class AppStorageService {
   static #instance = null;
@@ -61,7 +62,7 @@ export class AppStorageService {
       await this.#initDB();
     }
     return new Promise((resolve, reject) => {
-      const myWorker = new Worker("worker.js");
+      const myWorker = new Worker(WORKER_URL);
       myWorker.postMessage({
         type: "get_data",
         dbName: this.dbName,
@@ -82,7 +83,7 @@ export class AppStorageService {
 
   async addRecords(storeName, records) {
     return new Promise((resolve, reject) => {
-      const myWorker = new Worker("worker.js");
+      const myWorker = new Worker(WORKER_URL);
       myWorker.postMessage({
         type: "save_data",
         dbName: this.dbName,

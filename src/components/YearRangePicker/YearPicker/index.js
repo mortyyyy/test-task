@@ -1,4 +1,4 @@
-import { Component } from "../../component";
+import { Component } from "../../Component";
 
 export class YearPicker extends Component {
   /**
@@ -11,7 +11,7 @@ export class YearPicker extends Component {
    */
   constructor(root, from, to, defaultValue, onChange) {
     super(root, {
-      className: "select",
+      className: "year-picker",
       listeners: ["click"],
       listenOutside: true,
     });
@@ -30,7 +30,11 @@ export class YearPicker extends Component {
     const options = [];
 
     while (from <= to) {
-      options.push(`<div data-value=${from}>${from}</div>`);
+      const optionClass =
+        this.value === from ? "year-picker_option__selected" : "";
+      options.push(
+        `<div data-value=${from} class="year-picker_option ${optionClass}">${from}</div>`
+      );
       from++;
     }
     return options.join("").trim();
@@ -39,9 +43,9 @@ export class YearPicker extends Component {
   /**
    * @param {MouseEvent<HTMLElement>} ev
    */
-  onClick(ev) {
-    const value = +ev.target.dataset.value;
-    if (ev.target.dataset.value !== undefined) {
+  onClick(event) {
+    const value = +event.target.dataset.value;
+    if (event.target.dataset.value !== undefined) {
       this.value = value;
       this.onChange(value);
       this.opened = false;
@@ -74,14 +78,14 @@ export class YearPicker extends Component {
   }
 
   toHTML() {
-    const activeClass = this.opened ? "select_list__active" : "";
+    const activeClass = this.opened ? "year-picker_option__active" : "";
     const iconClass = this.opened ? "" : "chevron__bottom";
     return `
-              <span class="selected">
+              <span class="year-picker_selected">
                 <span>${this.value}</span>
                 <span class="chevron ${iconClass}"></span>
               </span>
-              <div class="select_list ${activeClass}">
+              <div class="year-picker_options ${activeClass}">
                 ${this.createOptionElements(this.from, this.to)}
               </div>
         `.trim();

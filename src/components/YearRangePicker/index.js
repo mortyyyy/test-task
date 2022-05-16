@@ -1,4 +1,4 @@
-import { Component } from "../component";
+import { Component } from "../Component";
 import { YearPicker } from "./YearPicker";
 
 /**
@@ -26,7 +26,7 @@ export class YearRangePicker extends Component {
   toHTML() {
     return `
             <div class="range-picker" id="range-picker">
-                <div id="from" class="year-from"></div>
+                <div id="from" class="range-picker_year-from"></div>
                 <div id="to"></div>
             </div>
         `.trim();

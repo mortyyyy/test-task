@@ -1,10 +1,10 @@
-import { Component } from "../../components/component";
+import { Component } from "../../components/Component";
 import { YearRangePicker } from "../../components/YearRangePicker";
 import { AppStorageService } from "../../storage";
-import { Chart } from "../../components/chart";
+import { Chart } from "../../components/Chart";
 
 //TODO compute values
-const MIN_YEAR = 1800;
+const MIN_YEAR = 1881;
 const MAX_YEAR = 2006;
 
 const DEFAULT_FROM_VALUE = new Date(MIN_YEAR, 0, 1);
@@ -20,7 +20,7 @@ function tooltip({ t, v }) {
 /**
  * Base page layout
  */
-export class Page extends Component {
+export class BasePage extends Component {
   constructor(root, { title, topic }) {
     super(root, {});
     this.title = title;
@@ -64,7 +64,7 @@ export class Page extends Component {
 
   handlePickerValueChange(yearFrom, yearTo) {
     this.dateFrom = new Date(yearFrom, 0, 1);
-    this.dateTo = new Date(yearTo + 1, 0, 1);
+    this.dateTo = new Date(yearTo, 11, 31);
     this.render();
   }
 
@@ -106,6 +106,6 @@ export class Page extends Component {
     this.children.chart.render();
 
     const data = await this.fetchData(this.dateFrom, this.dateTo);
-    this.children.chart.update(data.slice(0, 100), false);
+    this.children.chart.update(data, false);
   }
 }
