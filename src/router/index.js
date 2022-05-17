@@ -1,4 +1,6 @@
 export const BASE_PATH = "/";
+
+const ACTIVE_LINK_CLASS = "active";
 /**
  * Router class
  */
@@ -25,9 +27,9 @@ export class Router {
   styleLinks() {
     this.links.forEach((link) => {
       if (link.getAttribute("href") === this.currentPath) {
-        link.classList.add("active");
+        link.classList.add(ACTIVE_LINK_CLASS);
       } else {
-        link.classList.remove("active");
+        link.classList.remove(ACTIVE_LINK_CLASS);
       }
     });
   }

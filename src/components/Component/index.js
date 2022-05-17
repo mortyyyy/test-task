@@ -1,7 +1,3 @@
-/**
- * @param type
- * @return {string}
- */
 const toEventName = (type) => {
   if (!type) return "";
   else return `on${type[0].toUpperCase()}${type.slice(1)}`;
@@ -23,9 +19,6 @@ export class Component {
     this.children = {};
   }
 
-  /**
-   * Init DOM elements and all listeners
-   */
   init() {
     this.el = document.createElement(this.tag);
     this.el.classList.add(this.className);
@@ -40,19 +33,10 @@ export class Component {
     });
   }
 
-  /**
-   * Hook which is called after render
-   */
   afterRender() {}
 
-  /**
-   * Hook which is called after render
-   */
   registerChildren() {}
 
-  /**
-   * Clean up the dom and then render component HTML
-   */
   render() {
     if (this.el) this.destroy();
     this.init();
@@ -62,17 +46,10 @@ export class Component {
     this.afterRender();
   }
 
-  /**
-   * Returns component template
-   * @return {string}
-   */
   toHTML() {
     return ``;
   }
 
-  /**
-   * Clean up all events and dom elements
-   */
   destroy() {
     this.events.forEach(({ type, handler }) => {
       this.el.removeEventListener(type, handler);

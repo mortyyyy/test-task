@@ -2,6 +2,8 @@ const BASE_OPTIONS = { keyPath: "t" };
 const BASE_INDEX = { name: "t", keyPath: "t", options: { unique: true } };
 const WORKER_URL = "src/storage/storageWorker.js";
 
+const SUCCESS_STATUS = "success";
+
 export class AppStorageService {
   static #instance = null;
 
@@ -72,7 +74,7 @@ export class AppStorageService {
       });
 
       myWorker.onmessage = function (e) {
-        if (e.data.status === "success") {
+        if (e.data.status === SUCCESS_STATUS) {
           resolve(e.data.data);
         } else {
           reject(e.data.reason);
@@ -91,7 +93,7 @@ export class AppStorageService {
         records,
       });
       myWorker.onmessage = function (e) {
-        if (e.data.status === "success") {
+        if (e.data.status === SUCCESS_STATUS) {
           resolve();
         } else {
           reject();
