@@ -25,7 +25,7 @@ function tooltip({ t, v }) {
  */
 export class BasePage extends Component {
   constructor(root, { title, topic }) {
-    super(root, {});
+    super(root, { className: "base-page" });
     this.title = title;
     this.topic = topic;
 

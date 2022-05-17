@@ -74,6 +74,8 @@ export class Chart extends Component {
           2 -
         POINTER_WIDTH +
         "px";
+
+      this.pointer.style.display = "block";
     }
 
     if (this.tooltip) {
@@ -94,10 +96,9 @@ export class Chart extends Component {
       this.tooltip.innerHTML = this.tooltipFormatter
         ? this.tooltipFormatter(record)
         : null;
-    }
 
-    this.tooltip.style.display = "block";
-    this.pointer.style.display = "block";
+      this.tooltip.style.display = "block";
+    }
   }
 
   onMouseleave() {
