@@ -64,7 +64,6 @@ export class YearPicker extends Component {
 
   afterRender() {
     super.afterRender();
-    console.count();
     document.addEventListener("click", this.handleOutsideClick.bind(this), {
       capture: true,
     });
