@@ -1,4 +1,4 @@
-import { Router } from "./router";
+import { BASE_PATH, Router } from "./router";
 import { TemperaturePage } from "./pages/Temperature";
 import { PrecipitationPage } from "./pages/PrecipitationPage";
 import { Sidebar } from "./components/Sidebar";
@@ -14,9 +14,7 @@ import { Sidebar } from "./components/Sidebar";
     className: "app-sidebar_inner",
   });
   sidebar.render();
-  /**
-   * Routes List
-   */
+
   const routes = {
     "/": TemperaturePage,
     "/precipitation": PrecipitationPage,
@@ -24,5 +22,5 @@ import { Sidebar } from "./components/Sidebar";
 
   const router = new Router(root, routes);
 
-  router.navigate(window.location.pathname || "/");
+  router.navigate(window.location.pathname || BASE_PATH);
 })(window);

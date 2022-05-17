@@ -9,6 +9,7 @@ const DPI_HEIGHT = HEIGHT * 2;
 const VIEW_HEIGHT = DPI_HEIGHT - PADDING * 2;
 const VIEW_WIDTH = DPI_WIDTH - PADDING;
 const ROWS_COUNT = 5;
+const COLS_COUNT = 9;
 const OFFSET = 10;
 const POINTER_WIDTH = 5;
 const TOOLTIP_HORIZONTAL_OFFSET = 20;
@@ -133,20 +134,18 @@ export class Chart extends Component {
    * Draw x axis
    */
   xAxis() {
-    const colsCount = 10;
-    const step = Math.round(this.data.length / colsCount);
+    const delta = Math.ceil(this.data.length / COLS_COUNT);
     this.context.font = STYLES.font;
     this.context.beginPath();
-    for (let i = 1; i < this.data.length; i++) {
+
+    for (let i = 1; i < this.data.length; i = i + delta) {
       const x = i * this.xRatio;
-      if ((i - 1) % step === 0) {
-        const date = this.data[i].t;
-        this.context.fillText(
-          date.toLocaleDateString ? date.toLocaleDateString("ru-RU") : "",
-          x + PADDING,
-          DPI_HEIGHT - OFFSET
-        );
-      }
+      const date = this.data[i].t;
+      this.context.fillText(
+        date.toLocaleDateString ? date.toLocaleDateString("ru-RU") : "",
+        x + PADDING,
+        DPI_HEIGHT - OFFSET
+      );
     }
     this.context.stroke();
     this.context.closePath();

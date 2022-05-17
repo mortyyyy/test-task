@@ -2,6 +2,7 @@ import { Component } from "../../components/Component";
 import { YearRangePicker } from "../../components/YearRangePicker";
 import { AppStorageService } from "../../storage";
 import { Chart } from "../../components/Chart";
+import { MockService } from "../../api";
 
 //TODO compute values
 const MIN_YEAR = 1881;
@@ -12,8 +13,10 @@ const DEFAULT_TO_VALUE = new Date(MAX_YEAR, 11, 31);
 
 function tooltip({ t, v }) {
   return `
-    <span class="date">${t.toLocaleDateString("ru-RU")}</span>
-    <span>${v}</span>
+    <div class="base-page-chart_tooltip">
+       <span class="date">${t.toLocaleDateString("ru-RU")}</span>
+       <span>${v}</span>
+    </div>
   `;
 }
 
@@ -31,7 +34,7 @@ export class BasePage extends Component {
   }
   toHTML() {
     return `
-            <div class="page-header">
+            <div class="base-page_header">
                <h1>${this.title}</h1>  
                <div id="filter-container"></div>
             </div>
@@ -47,14 +50,14 @@ export class BasePage extends Component {
                     <div class="widget-mock_logo widget-mock_logo__green"></div>
                     <div class="widget-mock_content">
                         <span class="widget-mock_title">Title</span>
-                        <span class="widget-mock_value">49</span>
+                        <span class="widget-mock_value">77</span>
                     </div>
                 </div>
                  <div class="widget widget-mock">
                     <div class="widget-mock_logo widget-mock_logo__red"></div>
                     <div class="widget-mock_content">
                         <span class="widget-mock_title">Title</span>
-                        <span class="widget-mock_value">49</span>
+                        <span class="widget-mock_value">12</span>
                     </div>
                 </div>
             </div>   
@@ -70,18 +73,18 @@ export class BasePage extends Component {
 
   async fetchData(dateFrom, dateTo) {
     const storage = AppStorageService.getInstance();
-    const existingRecords = await storage.getRecords(
+    const savedRecords = await storage.getRecords(
       this.topic,
       dateFrom,
       dateTo
     );
-    if (!existingRecords.length) {
-      const response = await fetch(`./${this.topic}.json`);
-      const records = await response.json();
-      await storage.addRecords(this.topic, records);
-      return records;
+    if (!savedRecords.length) {
+      const response = await MockService.fetchData(this.topic);
+      const newRecords = await response.json();
+      await storage.addRecords(this.topic, newRecords);
+      return newRecords;
     } else {
-      return existingRecords;
+      return savedRecords;
     }
   }
 

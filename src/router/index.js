@@ -1,3 +1,4 @@
+export const BASE_PATH = "/";
 /**
  * Router class
  */
@@ -42,6 +43,10 @@ export class Router {
   }
 
   navigate(pathName) {
+    if (!this.routes[pathName]) {
+      pathName = BASE_PATH;
+    }
+
     window.history.pushState({}, pathName, pathName);
     this.renderPath(pathName);
   }
