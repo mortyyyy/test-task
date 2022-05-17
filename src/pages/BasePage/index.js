@@ -14,7 +14,7 @@ const DEFAULT_TO_VALUE = new Date(MAX_YEAR, 11, 31);
 function tooltip({ t, v }) {
   return `
     <div class="base-page-chart_tooltip">
-       <span class="date">${t.toLocaleDateString("ru-RU")}</span>
+       <span class="date">${new Date(t).toLocaleDateString("ru-RU")}</span>
        <span>${v}</span>
     </div>
   `;
@@ -73,15 +73,10 @@ export class BasePage extends Component {
 
   async fetchData(dateFrom, dateTo) {
     const storage = AppStorageService.getInstance();
-    const savedRecords = await storage.getRecords(
-      this.topic,
-      dateFrom,
-      dateTo
-    );
+    const savedRecords = await storage.getRecords(this.topic, dateFrom, dateTo);
     if (!savedRecords.length) {
-      const response = await MockService.fetchData(this.topic);
-      const newRecords = await response.json();
-      await storage.addRecords(this.topic, newRecords);
+      const newRecords = await MockService.fetchData(this.topic);
+      setTimeout(() => storage.addRecords(this.topic, newRecords), 0);
       return newRecords;
     } else {
       return savedRecords;

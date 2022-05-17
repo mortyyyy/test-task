@@ -143,7 +143,7 @@ export class Chart extends Component {
       const x = i * this.xRatio;
       const date = this.data[i].t;
       this.context.fillText(
-        date.toLocaleDateString ? date.toLocaleDateString("ru-RU") : "",
+        new Date(date).toLocaleDateString("ru-RU"),
         x + PADDING,
         DPI_HEIGHT - OFFSET
       );

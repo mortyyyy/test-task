@@ -15,9 +15,11 @@ onmessage = function (e) {
         });
         transaction.oncomplete = () => {
           postMessage({ status: "success" });
+          db.close();
         };
         transaction.onerror = () => {
           postMessage({ status: "error" });
+          db.close();
         };
       };
       break;
@@ -45,6 +47,7 @@ onmessage = function (e) {
               cursor.continue();
             } else {
               postMessage({ data: result, status: "success" });
+              db.close();
             }
           };
         }
